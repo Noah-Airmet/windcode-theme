@@ -146,7 +146,8 @@ def css(st):
     gust, cover = gust_field(st, st["seed"])
     st["cover"] = cover
     on, off = spark_tiles(rnd)
-    A = '[data-workspace-area="conversation"]'
+    # the whole chat column, so the wind runs behind the header bar too
+    A = '[data-chat-column]'
     S = '[data-slot="sidebar-inner"]'
     c = st["canvas"]
     calm = f"radial-gradient(ellipse 60% 70% at 50% 50%,{c}d0,{c}66 65%,{c}00)"
@@ -159,17 +160,17 @@ def css(st):
     shifts = [(rnd.randrange(1, 12) * CELL_W, rnd.randrange(1, 9) * CELL_H) for _ in range(FLICK_STEPS)]
     flick = FLICK_STEPS * FLICK_S
     ky = "".join(f"{i * 100 / FLICK_STEPS:.2f}%{{-webkit-mask-position-y:{y}px,0,0,0}}" for i, y in enumerate(ys))
-    kb = "".join(f"{i * 100 / FLICK_STEPS:.2f}%{{background-position:0 0,{x}px {y}px}}" for i, (x, y) in enumerate(shifts))
+    kb = "".join(f"{i * 100 / FLICK_STEPS:.2f}%{{background-position:0 0,0 0,{x}px {y}px}}" for i, (x, y) in enumerate(shifts))
     return (
         f":root{{--wg:{url(tile(st, rnd))};--wd:{gust};--won:{url(on)};--woff:{url(off)}}}"
         f"{A}{{position:relative;isolation:isolate}}"
-        # a new thread's empty timeline is painted solid; let the wind through
-        f"{A} [data-timeline-loading]{{background:transparent!important}}"
+        # the header, the chat area and a new thread's empty timeline are painted solid; let the wind through
+        f"{A} :is([data-chat-header],[data-workspace-area=conversation],[data-timeline-loading]){{background:transparent!important}}"
         # brighter on the new-thread page, where there is nothing to read past it
         f"{A}:has([data-timeline-loading=true])::before,{A}:has([data-timeline-loading=true])::after{{opacity:{st['lit'] * LANDING:.3f}}}"
         # ::after shows the letters, ::before shows the other letter in the cells that are flickering
         f"{A}::before,{A}::after{{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;"
-        f"opacity:{st['lit']};background-image:{calm},var(--wg);background-size:100% 100%,auto;"
+        f"opacity:{st['lit']};background-image:linear-gradient({c}c0,{c}00 64px),{calm},var(--wg);background-size:100% 100%,100% 100%,auto;"
         f"mask-size:{sizes};mask-composite:intersect,add,intersect,add;"
         f"animation:t3wx {p}s steps({p * FPS}) infinite,t3wy {flick:g}s step-end infinite}}"
         f"{A}::after{{mask-image:var(--woff),{base},var(--wd),var(--wd)}}"
@@ -197,7 +198,7 @@ def main():
         print(f"{key:8} css {len(c):6} chars, lit {st['cover']:.0%}")
         assert len(c) <= 20000, key
         fg = "#e8e6dc" if st["appearance"] == "dark" else "#2b2a26"
-        scoped = c.replace('[data-workspace-area="conversation"]', f'#{key}')
+        scoped = c.replace('[data-chat-column]', f'#{key}')
         cards.append(f"""<style>{scoped}</style><figure><div class="win" id="{key}" style="background:{st['canvas']};color:{fg}">
 <div class="msg user">Can you check whether the Air reconnected after the update?</div>
 <div class="msg">Yes. Both Macs are on the same Nightly build and the Air answers again.</div>
