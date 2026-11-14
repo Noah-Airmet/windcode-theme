@@ -2,7 +2,9 @@
 
 Animated chat backgrounds for [T3 Code](https://github.com/pingdotgg/t3code): a grid of small letters, faint everywhere, lit where gusts of wind drift across it, with letters quietly changing in place. After Claude Code's "New session" texture.
 
-![Wind on the T3 Code new-thread page](preview/screenshot.png)
+![Wind on the T3 Code new-thread page](preview/demo.gif)
+
+[Watch it in full quality](preview/demo.mp4)
 
 ## Themes
 
