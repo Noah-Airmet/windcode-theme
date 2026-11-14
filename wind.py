@@ -39,19 +39,19 @@ STYLES = {
     # Closest to the Claude Code texture: grey letters, a slow wind.
     "wind": dict(name="Wind", appearance="dark", canvas="#000000", accent="#1AADFF",
                  glyphs=LATIN, ink="#e8e6dc", ambient=.03, lit=.13, scale=(500, 175), threshold=(.45, .66), period=59, seed=7,
-                 glass="#17171acc", sheen="#ffffff0d", edge="#ffffff14"),
+                 glass="#101012cc", sheen="#ffffff07"),
     # gsa-dash's own Field: the archive's alphabets.
     "archive": dict(name="Archive Wind", appearance="dark", canvas="#000000", accent="#1AADFF",
                     glyphs=ARCHIVE, ink="#efe9d8", ambient=.03, lit=.14, scale=(500, 175), threshold=(.45, .66), period=59, seed=11,
-                    glass="#17171acc", sheen="#ffffff0d", edge="#ffffff14"),
+                    glass="#101012cc", sheen="#ffffff07"),
     # Waves: long swells of blue-lit code characters rolling sideways.
     "tide": dict(name="Tide", appearance="dark", canvas="#000000", accent="#1AADFF",
                  glyphs=CODE, ink="#7fd0ff", ambient=.03, lit=.15, scale=(1000, 100), threshold=(.45, .66), period=59, seed=3,
-                 glass="#0f1a24cc", sheen="#bfe6ff10", edge="#bfe6ff1a"),
+                 glass="#0a121acc", sheen="#bfe6ff08"),
     # Light: ink letters on paper, the same wind.
     "paper": dict(name="Paper Wind", appearance="light", canvas="#f4f1e8", accent="#1a7fd1",
                   glyphs=LATIN, ink="#2b2a26", ambient=.035, lit=.12, scale=(500, 175), threshold=(.45, .66), period=59, seed=5,
-                  glass="#e9e5d8cc", sheen="#ffffff66", edge="#0000001a"),
+                  glass="#e9e5d8cc", sheen="#ffffff66"),
 }
 
 CELL_W, CELL_H, FONT = 6, 12, 9
@@ -180,7 +180,8 @@ def css(st):
         f"@keyframes t3wy{{{ky}}}@keyframes t3wb{{{kb}}}"
         # the sidebar: plain glass (letters behind it, blurred, read too big and too white)
         f"{S}{{position:relative;isolation:isolate;background:linear-gradient(180deg,{st['sheen']},transparent 35%),{st['glass']}!important;"
-        f"box-shadow:inset -1px 0 0 {st['edge']}}}"
+        "border-color:transparent!important}"
+        '[data-slot="sidebar-container"]{border-color:transparent!important}'
         f"@media (prefers-reduced-motion:reduce){{{A}::before,{A}::after{{animation:none}}}}"
     )
 
@@ -193,7 +194,7 @@ def main():
         c = css(st)
         t = {"version": 1, "name": st["name"], "appearance": st["appearance"],
              "canvas": st["canvas"], "accent": st["accent"],
-             "colors": {"sidebar": st["glass"][:7]}, "css": c}
+             "colors": {"sidebar": st["glass"][:7], "sidebarBorder": st["glass"][:7]}, "css": c}
         json.dump(t, open(os.path.join(OUT, f"{st['name'].lower().replace(' ', '-')}.json"), "w"), ensure_ascii=False)
         print(f"{key:8} css {len(c):6} chars, lit {st['cover']:.0%}")
         assert len(c) <= 20000, key
