@@ -151,6 +151,7 @@ def css(st):
     S = '[data-slot="sidebar-inner"]'
     c = st["canvas"]
     calm = f"radial-gradient(ellipse 60% 70% at 50% 50%,{c}d0,{c}66 65%,{c}00)"
+    calm_light = f"radial-gradient(ellipse 60% 70% at 50% 50%,{c}40,{c}1a 65%,{c}00)"   # the new-thread page
     amb = round(st["ambient"] / st["lit"], 2)
     base = f"linear-gradient(#000000{int(amb * 255):02x},#000000{int(amb * 255):02x})"
     sw, sh = SPARK
@@ -167,7 +168,7 @@ def css(st):
         # the header, the chat area and a new thread's empty timeline are painted solid; let the wind through
         f"{A} :is([data-chat-header],[data-workspace-area=conversation],[data-timeline-loading]){{background:transparent!important}}"
         # brighter on the new-thread page, where there is nothing to read past it
-        f"{A}:has([data-timeline-loading=true])::before,{A}:has([data-timeline-loading=true])::after{{opacity:{st['lit'] * LANDING:.3f}}}"
+        f"{A}:has([data-timeline-loading=true])::before,{A}:has([data-timeline-loading=true])::after{{opacity:{st['lit'] * LANDING:.3f};background-image:linear-gradient({c}c0,{c}00 64px),{calm_light},var(--wg)}}"
         # ::after shows the letters, ::before shows the other letter in the cells that are flickering
         f"{A}::before,{A}::after{{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;"
         f"opacity:{st['lit']};background-image:linear-gradient({c}c0,{c}00 64px),{calm},var(--wg);background-size:100% 100%,100% 100%,auto;"
