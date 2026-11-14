@@ -58,6 +58,7 @@ CELL_W, CELL_H, FONT = 5, 10, 7
 TILE_COLS, TILE_ROWS = 72, 26
 MASKS = [(2000, 1400), (1600, 1120)]   # the same gust field twice, at two sizes; lit only where both are
 RES = 10                               # gust field pixel = RES css px (it is smooth, so it upscales cleanly)
+LANDING = 1.4                          # landing page brightness, relative to chats
 FPS = 24                               # mask steps per second; keeps repaints cheap
 
 
@@ -164,6 +165,8 @@ def css(st):
         f"{A}{{position:relative;isolation:isolate}}"
         # a new thread's empty timeline is painted solid; let the wind through
         f"{A} [data-timeline-loading]{{background:transparent!important}}"
+        # brighter on the new-thread page, where there is nothing to read past it
+        f"{A}:has([data-timeline-loading=true])::before,{A}:has([data-timeline-loading=true])::after{{opacity:{st['lit'] * LANDING:.3f}}}"
         # ::after shows the letters, ::before shows the other letter in the cells that are flickering
         f"{A}::before,{A}::after{{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;"
         f"opacity:{st['lit']};background-image:{calm},var(--wg);background-size:100% 100%,auto;"
