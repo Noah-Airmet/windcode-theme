@@ -13,7 +13,7 @@ Animated chat backgrounds for [T3 Code](https://github.com/pingdotgg/t3code): a 
 | [Tide](themes/tide.json) | Blue code characters in long rolling swells. |
 | [Paper Wind](themes/paper-wind.json) | Light mode: ink letters on paper. |
 
-Each one also gives the sidebar a plain glass tint.
+Each one also gives the sidebar a plain glass tint, and covers the new-thread page as well as chats.
 
 ## Install
 

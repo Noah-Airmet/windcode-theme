@@ -145,8 +145,7 @@ def css(st):
     gust, cover = gust_field(st, st["seed"])
     st["cover"] = cover
     on, off = spark_tiles(rnd)
-    # the chat area, or on a new thread (no chat area yet) the whole chat column
-    A = ':is([data-workspace-area="conversation"],[data-chat-column]:not(:has([data-workspace-area="conversation"])))'
+    A = '[data-workspace-area="conversation"]'
     S = '[data-slot="sidebar-inner"]'
     c = st["canvas"]
     calm = f"radial-gradient(ellipse 60% 70% at 50% 50%,{c}d0,{c}66 65%,{c}00)"
@@ -163,6 +162,8 @@ def css(st):
     return (
         f":root{{--wg:{url(tile(st, rnd))};--wd:{gust};--won:{url(on)};--woff:{url(off)}}}"
         f"{A}{{position:relative;isolation:isolate}}"
+        # a new thread's empty timeline is painted solid; let the wind through
+        f"{A} [data-timeline-loading]{{background:transparent!important}}"
         # ::after shows the letters, ::before shows the other letter in the cells that are flickering
         f"{A}::before,{A}::after{{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;"
         f"opacity:{st['lit']};background-image:{calm},var(--wg);background-size:100% 100%,auto;"
@@ -193,7 +194,7 @@ def main():
         print(f"{key:8} css {len(c):6} chars, lit {st['cover']:.0%}")
         assert len(c) <= 20000, key
         fg = "#e8e6dc" if st["appearance"] == "dark" else "#2b2a26"
-        scoped = c.replace(':is([data-workspace-area="conversation"],[data-chat-column]:not(:has([data-workspace-area="conversation"])))', f'#{key}')
+        scoped = c.replace('[data-workspace-area="conversation"]', f'#{key}')
         cards.append(f"""<style>{scoped}</style><figure><div class="win" id="{key}" style="background:{st['canvas']};color:{fg}">
 <div class="msg user">Can you check whether the Air reconnected after the update?</div>
 <div class="msg">Yes. Both Macs are on the same Nightly build and the Air answers again.</div>
