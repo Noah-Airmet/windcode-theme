@@ -54,7 +54,7 @@ STYLES = {
                   glass="#e9e5d8cc", sheen="#ffffff66", edge="#0000001a"),
 }
 
-CELL_W, CELL_H, FONT = 5, 10, 7
+CELL_W, CELL_H, FONT = 6, 12, 9
 TILE_COLS, TILE_ROWS = 72, 26
 MASKS = [(2000, 1400), (1600, 1120)]   # the same gust field twice, at two sizes; lit only where both are
 RES = 10                               # gust field pixel = RES css px (it is smooth, so it upscales cleanly)
@@ -73,7 +73,7 @@ def url(svg):
 def tile(st, rnd):
     w, h = TILE_COLS * CELL_W, TILE_ROWS * CELL_H
     rows = "".join(
-        f'<tspan x="0" y="{r * CELL_H + 8}" textLength="{w}" lengthAdjust="spacing">'
+        f'<tspan x="0" y="{r * CELL_H + 10}" textLength="{w}" lengthAdjust="spacing">'
         f'{esc("".join(rnd.choice(st["glyphs"]) for _ in range(TILE_COLS)))}</tspan>'
         for r in range(TILE_ROWS))
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}">'
@@ -123,7 +123,7 @@ def gust_field(st, seed):
     return 'url("data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode() + '")', float((v > .3).mean())
 
 
-SPARK = (100, 130)       # flicker tile: 20 x 13 cells
+SPARK = (120, 132)       # flicker tile: 20 x 11 cells
 SPARK_DENSITY = .09      # share of cells showing their other letter at any moment
 FLICK_STEPS, FLICK_S = 16, .4   # the flicker pattern jumps every FLICK_S seconds
 
